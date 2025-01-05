@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+service UserService {
+  // Xóa phương thức getUser và thêm healthCheck
+  rpc healthCheck (Empty) returns (HealthResponse);
+   rpc BackupData (BackupRequest) returns (BackupResponse);
+  rpc RetrieveBackup (BackupRequest) returns (BackupResponse);
+}
+
+// Định nghĩa thông điệp
+message Empty {}
+
+message HealthResponse {
+  string message = 1;
+}
+
+// Định nghĩa yêu cầu sao lưu và phục hồi
+message BackupRequest {
+  string node_type = 1;  // "users", "folders", "notes"
+  string data = 2;       // Dữ liệu cần sao lưu
+}
+
+message BackupResponse {
+  bool success = 1;
+  string message = 2;
+}
