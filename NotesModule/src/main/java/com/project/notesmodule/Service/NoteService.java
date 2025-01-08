@@ -7,6 +7,7 @@ import com.project.notesmodule.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,20 +19,22 @@ public class NoteService {
         Note note = new Note();
 
         note.setContent(request.getContent());
-        note.setCreateAt(request.getCreateAt());
-        note.setUpdateAt(request.getUpdateAt());
+        note.setCreateAt(LocalDate.now());
+        note.setUpdateAt(LocalDate.now());
 
         return noteRepository.save(note);
     }
 
     public Note updateNote(String noteId, NoteUpdateRequest request) {
         Note note = noteRepository.findById(noteId)
-                .orElseThrow(() -> new RuntimeException("Note not found to be update"));
+                .orElseThrow(() -> new RuntimeException("Note not found to be updated"));
 
         note.setContent(request.getContent());
-        note.setUpdateAt(request.getUpdateAt());
+        note.setUpdateAt(LocalDate.now()); // Tự động cập nhật ngày hiện tại
+
         return noteRepository.save(note);
     }
+
 
     public void deleteNote(String noteId) {
         Note note = noteRepository.findById(noteId)
