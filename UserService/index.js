@@ -4,8 +4,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
-const redis = require("redis");
-require("module-alias/register");
 
 // Đọc file .env
 dotenv.config();
@@ -14,22 +12,17 @@ dotenv.config();
 const packageDefinition = protoLoader.loadSync("./proto/userServices.proto"); //tỉa tệp proto là cấu trúc Protobuf
 const proto = grpc.loadPackageDefinition(packageDefinition);
 
-// Khởi tạo Redis Client
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || "localhost",
-  port: process.env.REDIS_PORT || 6379,
-});
-
-redisClient.on("connect", () => {
-  console.log("Connected to Redis");
-});
-
 // Khởi tạo API Express
 const app = express();
 const apiPort = 3001;
 
 // Middleware cho API
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // URL frontend
+    credentials: true, // Cho phép gửi cookie và thông tin xác thực
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -86,45 +79,3 @@ const startServers = async () => {
 
 // Khởi động cả hai server khi ứng dụng được khởi tạo
 startServers();
-
-// Hàm sao lưu dữ liệu vào Redis
-function backupData(call, callback) {
-  const nodeType = call.request.node_type;
-  const data = call.request.data;
-
-  // Lưu bản sao dữ liệu vào Redis
-  redisClient.set(`${nodeType}_backup`, data, (err, reply) => {
-    if (err) {
-      callback({
-        success: false,
-        message: `Error storing backup: ${err}`,
-      });
-    } else {
-      callback({
-        success: true,
-        message: `Backup for ${nodeType} saved successfully.`,
-      });
-    }
-  });
-}
-
-// Hàm phục hồi dữ liệu từ Redis
-function retrieveBackup(call, callback) {
-  const nodeType = call.request.node_type;
-
-  // Lấy bản sao dữ liệu từ Redis
-  redisClient.get(`${nodeType}_backup`, (err, data) => {
-    if (err || !data) {
-      callback({
-        success: false,
-        message: `No backup found for ${nodeType}.`,
-      });
-    } else {
-      callback({
-        success: true,
-        message: `Backup data retrieved successfully.`,
-        data: data,
-      });
-    }
-  });
-}
