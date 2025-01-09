@@ -1,4 +1,4 @@
-const db = require("~/database/db");
+const db = require("../database/db");
 const bcrypt = require("bcryptjs");
 const { generateAccessToken, generateRefreshToken } = require("./JwtService");
 
@@ -58,20 +58,27 @@ const userService = {
         });
       }
 
-      const access_token = await generateAccessToken({
+      const accessToken = await generateAccessToken({
         id: user.id,
-        isAdmin: user.isAdmin,
       });
-      const refresh_token = await generateRefreshToken({
+      const refreshToken = await generateRefreshToken({
         id: user.id,
-        isAdmin: user.isAdmin,
+      });
+
+      const safeRefreshToken = encodeURIComponent(refreshToken);
+
+      res.cookie("refreshToken", safeRefreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Strict",
+        path: "/",
       });
 
       return res.status(200).json({
         status: "OK",
         message: "Đăng nhập thành công",
-        access_token,
-        refresh_token,
+        user,
+        accessToken,
       });
     });
   },

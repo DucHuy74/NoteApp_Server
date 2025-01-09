@@ -22,7 +22,8 @@
     "module-alias": "^2.2.3",
     "mysql2": "^3.12.0",
     "nodemon": "^3.1.9",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "userservice": "file:"
   },
   "_moduleAliases": {
     "~": "./src"
