@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.keyvalue";
+option java_outer_classname = "KeyValueProto";
+option objc_class_prefix = "RTG";
+
+package keyvalue;
+
+service KeyValue {
+  rpc GetKey(Key) returns (Value);
+
+  rpc DeleteKey(Key) returns (Message);
+}
+
+message Message {
+  string msg = 1;
+}
+
+message Key {
+  string key = 1;
+}
+
+message Value {
+  string value = 1;
+}
