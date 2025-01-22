@@ -1,6 +1,6 @@
-const db = require("../database/db");
 const bcrypt = require("bcryptjs");
-const { generateAccessToken, generateRefreshToken } = require("./JwtService");
+const { readDb, writeDb } = require("../database/jsonDb");
+const { v4: uuidv4 } = require("uuid");
 
 const userService = {
   createUser: (req, res) => {
@@ -26,60 +26,60 @@ const userService = {
 
     const hash = bcrypt.hashSync(password, 10);
 
-    const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-    db.query(sql, [name, email, hash], (err, result) => {
-      if (err) {
-        console.error("Error inserting user into database:", err);
-        return res.status(500).json({ message: "Lỗi khi thêm người dùng" });
-      }
-      return res.status(200).json({ message: "Thêm người dùng thành công" });
+    const id = uuidv4();
+    const db = readDb();
+
+    db.users.push({
+      id,
+      name,
+      email,
+      password: hash,
+    });
+    writeDb(db);
+    return res.status(200).json({
+      status: "OK",
+      message: "sign up success",
     });
   },
-  signIn: (req, res) => {
+  signIn: async (req, res) => {
     const { email, password } = req.body;
-    const sql = "SELECT * FROM users WHERE email = ?";
-    db.query(sql, [email], async (err, result) => {
-      if (err) {
-        console.error("Error getting user from database:", err);
-        return res.status(500).json({ message: "Lỗi khi lấy người dùng" });
-      }
-      if (result.length === 0) {
-        return res.status(200).json({
-          status: "ERR",
-          message: "Email không tồn tại",
-        });
-      }
-
-      const user = result[0];
-      if (!bcrypt.compareSync(password, user.password)) {
-        return res.status(200).json({
-          status: "ERR",
-          message: "Mật khẩu không đúng",
-        });
-      }
-
-      const accessToken = await generateAccessToken({
-        id: user.id,
-      });
-      const refreshToken = await generateRefreshToken({
-        id: user.id,
-      });
-
-      const safeRefreshToken = encodeURIComponent(refreshToken);
-
-      res.cookie("refreshToken", safeRefreshToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "Strict",
-        path: "/",
-      });
-
+    const db = readDb();
+    const user = db.users.find((user) => {
+      return user.email === email;
+    });
+    if (!bcrypt.compareSync(password, user.password)) {
       return res.status(200).json({
-        status: "OK",
-        message: "Đăng nhập thành công",
-        user,
-        accessToken,
+        status: "ERR",
+        message: "Mật khẩu không đúng",
       });
+    }
+    const { password: userPassword, ...userResponse } = user;
+    return res.status(200).json({
+      status: "OK",
+      message: "Đăng nhập thành công",
+      user: userResponse,
+    });
+  },
+  getDetailsUser: async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        status: "ERR",
+        message: "Thiếu id",
+      });
+    }
+    const db = readDb();
+    const user = db.users.find((user) => user.id === id);
+    if (!user) {
+      return res.status(400).json({
+        status: "ERR",
+        message: "id người dùng không hợp lệ",
+      });
+    }
+    const { password: userPassword, ...userResponse } = user;
+    return res.status(200).json({
+      status: "OK",
+      user: userResponse,
     });
   },
 };
