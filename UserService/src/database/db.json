@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "7771b390-7b99-4af8-a0c3-62dbb9503932",
+      "name": "nguyên",
+      "email": "xyz@gmail.com",
+      "password": "$2a$10$7PTF1ynnW0cICO68Pd0BreTMMb/uCN8JGLNL4OtVk5H.RKnCozQZa"
+    }
+  ],
+  "folders": [
+    {
+      "id": "5d81e56f-d35e-4799-b9f9-eff80bda612b",
+      "userId": "7771b390-7b99-4af8-a0c3-62dbb9503932",
+      "name": "new folder update"
+    }
+  ],
+  "notes": [
+    {
+      "id": "5fd703c7-1ed0-494c-9a46-68a6fb06da47",
+      "folderId": "5d81e56f-d35e-4799-b9f9-eff80bda612b",
+      "content": "<p>Học mãi</p>"
+    }
+  ]
+}

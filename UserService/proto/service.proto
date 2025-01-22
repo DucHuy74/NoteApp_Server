@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+service DataService {
+    // Thêm hoặc cập nhật user
+    rpc UpsertUser(User) returns (OperationResponse);
+
+    // Lấy thông tin user
+    rpc GetUser(UserRequest) returns (UserResponse);
+
+    // Thêm, sửa, xóa folder
+    rpc AddFolder(Folder) returns (OperationResponse);
+    rpc UpdateFolder(Folder) returns (OperationResponse);
+    rpc DeleteFolder(FolderRequest) returns (OperationResponse);
+
+    // Thêm, sửa, xóa note
+    rpc AddNote(Note) returns (OperationResponse);
+    rpc UpdateNote(Note) returns (OperationResponse);
+    rpc DeleteNote(NoteRequest) returns (OperationResponse);
+
+    // Lấy folder hoặc note từ ID
+    rpc GetFolder(FolderRequest) returns (FolderResponse);
+    rpc GetNote(NoteRequest) returns (NoteResponse);
+}
+
+// Định nghĩa User
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string password = 4;
+}
+
+// Định nghĩa Folder
+message Folder {
+    string id = 1;
+    string userId = 2; // Liên kết với User
+    string name = 3;
+}
+
+// Định nghĩa Note
+message Note {
+    string id = 1;
+    string folderId = 2; // Liên kết với Folder
+    string content = 3; // Nội dung ghi chú
+}
+
+// Request cho việc lấy dữ liệu theo ID
+message UserRequest {
+    string id = 1; // ID của User
+}
+
+message FolderRequest {
+    string id = 1; // ID của Folder
+}
+
+message NoteRequest {
+    string id = 1; // ID của Note
+}
+
+// Response trả về User
+message UserResponse {
+    User user = 1;
+}
+
+// Response trả về Folder
+message FolderResponse {
+    Folder folder = 1;
+}
+
+// Response trả về Note
+message NoteResponse {
+    Note note = 1;
+}
+
+// Response cho các thao tác CRUD (Create, Read, Update, Delete)
+message OperationResponse {
+    bool success = 1; // Kết quả thành công hay thất bại
+    string message = 2; // Thông điệp phản hồi
+}
