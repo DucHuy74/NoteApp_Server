@@ -28,22 +28,19 @@ message User {
     string name = 2;
     string email = 3;
     string password = 4;
-    string avatar = 5;
 }
 
 // Định nghĩa Folder
 message Folder {
     string id = 1;
-    string user_id = 2; // Liên kết với User
+    string userId = 2; // Liên kết với User
     string name = 3;
-    string created_at = 4;
-    repeated Note notes = 5; // Danh sách các ghi chú trong folder
 }
 
 // Định nghĩa Note
 message Note {
     string id = 1;
-    string folder_id = 2; // Liên kết với Folder
+    string folderId = 2; // Liên kết với Folder
     string content = 3; // Nội dung ghi chú
 }
 
