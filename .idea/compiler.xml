@@ -3,35 +3,31 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for NotesModule" enabled="true">
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath>
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-        </processorPath>
         <module name="NotesModule" />
       </profile>
-      <profile name="Annotation profile for Folder_Module" enabled="true">
+      <profile name="Annotation profile for FolderModule" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath>
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="Folder_Module" />
+        <module name="FolderModule" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="FolderModule" target="21" />
+      <module name="Folder_Module" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="FolderModule" options="-parameters" />
       <module name="Folder_Module" options="-parameters" />
-      <module name="NotesModule" options="-parameters" />
+      <module name="NotesModule" options="" />
     </option>
   </component>
 </project>
