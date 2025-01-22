@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package notesmodule;
+import "google/protobuf/empty.proto";
+
+option java_package = "com.project.notesmodule.grpc";
+option java_outer_classname = "NotesServiceProto";
+
+// Định nghĩa message cho yêu cầu tạo ghi chú
+message NoteCreationRequest {
+  string title = 1;
+  string content = 2;
+}
+
+// Định nghĩa message cho yêu cầu cập nhật ghi chú
+message NoteUpdateRequest {
+  string title = 1;
+  string content = 2;
+}
+
+// Định nghĩa message cho ghi chú
+message Note {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+}
+
+// Định nghĩa message cho phản hồi xóa ghi chú
+message DeleteNoteResponse {
+  string message = 1;
+}
+
+// Định nghĩa các dịch vụ gRPC
+service NoteService {
+  rpc CreateNote (NoteCreationRequest) returns (Note);
+  rpc GetNotes (google.protobuf.Empty) returns (stream Note);
+  rpc GetNote (NoteIdRequest) returns (Note);
+  rpc UpdateNote (UpdateNoteRequest) returns (Note);
+  rpc DeleteNote (NoteIdRequest) returns (DeleteNoteResponse);
+}
+
+// Định nghĩa message cho yêu cầu lấy và xóa ghi chú theo ID
+message NoteIdRequest {
+  string id = 1;
+}
+
+// Định nghĩa message cho yêu cầu cập nhật ghi chú với ID
+message UpdateNoteRequest {
+  string id = 1;
+  NoteUpdateRequest note = 2;
+}
