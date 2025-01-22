@@ -2,6 +2,7 @@ const GrpcService = require("./src/services/GrpcService");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 
@@ -9,7 +10,7 @@ const protoLoader = require("@grpc/proto-loader");
 dotenv.config();
 
 // Tải cấu trúc .proto cho gRPC
-const packageDefinition = protoLoader.loadSync("./proto/userServices.proto"); //tỉa tệp proto là cấu trúc Protobuf
+const packageDefinition = protoLoader.loadSync("./proto/service.proto"); //tỉa tệp proto là cấu trúc Protobuf
 const proto = grpc.loadPackageDefinition(packageDefinition);
 
 // Khởi tạo API Express
@@ -36,7 +37,7 @@ app.get("/", (req, res) => {
 
 // Khởi tạo gRPC server
 const grpcServer = new grpc.Server();
-grpcServer.addService(proto.UserService.service, GrpcService);
+grpcServer.addService(proto.DataService.service, GrpcService);
 
 // Hàm khởi động API server
 const startApiServer = () => {

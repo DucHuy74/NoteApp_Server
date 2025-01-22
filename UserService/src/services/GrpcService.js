@@ -11,6 +11,15 @@ const healthCheck = (call, callback) => {
   }
 };
 
+const GetUser = (call, callback) => {
+  try {
+    
+  } catch(err) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   healthCheck,
+  GetUser
 };
