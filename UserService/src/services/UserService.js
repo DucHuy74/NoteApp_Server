@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const { readDb, writeDb } = require("../database/jsonDb");
 const { v4: uuidv4 } = require("uuid");
+const { NoteService, FolderService } = require("../../client");
 
 const userService = {
   createUser: (req, res) => {
@@ -12,12 +13,14 @@ const userService = {
         status: "ERR",
         message: "The input is required",
       });
-    } else if (!isCheckEmail) {
+    }
+    if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
         message: "The input is email",
       });
-    } else if (password !== confirmPassword) {
+    }
+    if (password !== confirmPassword) {
       return res.status(200).json({
         status: "ERR",
         message: "The password is equal confirmPassword",
@@ -28,14 +31,26 @@ const userService = {
 
     const id = uuidv4();
     const db = readDb();
-
-    db.users.push({
+    const user = {
       id,
       name,
       email,
       password: hash,
-    });
+    };
+    db.users.push(user);
     writeDb(db);
+    NoteService.UpsertUser(user, (err, response) => {
+      if (err) {
+        console.error("Error syncing with NoteService:", err);
+      }
+    });
+
+    FolderService.UpsertUser(user, (err, response) => {
+      if (err) {
+        console.error("Error syncing with FolderService:", err);
+      }
+    });
+
     return res.status(200).json({
       status: "OK",
       message: "sign up success",

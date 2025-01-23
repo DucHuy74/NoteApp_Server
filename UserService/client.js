@@ -1,17 +1,23 @@
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 
-const packageDefinition = protoLoader.loadSync("./proto/service.proto"); //tỉa tệp proto là cấu trúc Protobuf
+const packageDefinition = protoLoader.loadSync("./proto/service.proto", {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
 const proto = grpc.loadPackageDefinition(packageDefinition);
 
 const NoteService = new proto.DataService(
-  "localhost:50051", // Địa chỉ server
-  grpc.credentials.createInsecure() // Không dùng SSL
+  "localhost:50053",
+  grpc.credentials.createInsecure()
 );
 
 const FolderService = new proto.DataService(
-  "localhost:50051", // Địa chỉ server
-  grpc.credentials.createInsecure() // Không dùng SSL
+  "localhost:50052",
+  grpc.credentials.createInsecure()
 );
 
 module.exports = {

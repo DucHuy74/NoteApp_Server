@@ -1,6 +1,7 @@
 const grpc = require("@grpc/grpc-js");
 const { readDb, writeDb } = require("../database/jsonDb");
 const { v4: uuidv4 } = require("uuid");
+const { NoteService, UserService } = require("../../client");
 
 const healthCheck = (call, callback) => {
   // Trả về trạng thái OK nếu hệ thống hoạt động bình thường
