@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class NoteService {
+public class NoteService implements NoteServiceImpl{
     @Autowired
     private NoteRepository noteRepository;
 
