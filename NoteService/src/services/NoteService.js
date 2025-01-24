@@ -61,11 +61,33 @@ const noteService = {
       res.status(500).json({ message: "Lỗi cập nhật note" });
     }
   },
-  getNote: (req, res) => {
+  getNote: async (req, res) => {
     try {
       const { id } = req.params;
       const db = readDb();
-      const note = db.notes.find((note) => note.id === id);
+      let note = db.notes.find((note) => note.id === id);
+      if (!note) {
+        try {
+          const userNotePromise = new Promise((resolve, reject) => {
+            UserService.GetNote({ id }, (err, response) => {
+              resolve(response.note);
+            });
+          });
+          const folderNotePromise = new Promise((resolve, reject) => {
+            FolderService.GetNote({ id }, (err, response) => {
+              resolve(response.note);
+            });
+          });
+          const [nodeUser, nodeFolder] = await Promise.all([
+            userNotePromise,
+            folderNotePromise,
+          ]);
+          note = nodeUser || nodeFolder;
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Lỗi lấy note" });
+        }
+      }
       if (!note) {
         return res.status(404).json({ message: "Note không tồn tại" });
       }

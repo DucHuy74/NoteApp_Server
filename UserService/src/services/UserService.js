@@ -77,20 +77,53 @@ const userService = {
   },
   getDetailsUser: async (req, res) => {
     const { id } = req.params;
+
     if (!id) {
       return res.status(400).json({
         status: "ERR",
         message: "Thiếu id",
       });
     }
+
     const db = readDb();
-    const user = db.users.find((user) => user.id === id);
+    let user = db.users.find((user) => user.id === id);
+
     if (!user) {
-      return res.status(400).json({
-        status: "ERR",
-        message: "id người dùng không hợp lệ",
-      });
+      try {
+        const noteUserPromise = new Promise((resolve, reject) => {
+          NoteService.getUser({ id }, (err, response) => {
+            resolve(response.user); 
+          });
+        });
+
+        const folderUserPromise = new Promise((resolve, reject) => {
+          FolderService.getUser({ id }, (err, response) => {
+            resolve(response.user);
+          });
+        });
+
+        const [noteUser, folderUser] = await Promise.all([
+          noteUserPromise,
+          folderUserPromise,
+        ]);
+
+        user = noteUser || folderUser;
+
+        if (!user) {
+          return res.status(404).json({
+            status: "ERR",
+            message: "Không tìm thấy user",
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        return res.status(500).json({
+          status: "ERR",
+          message: "Lỗi khi gọi service",
+        });
+      }
     }
+
     const { password: userPassword, ...userResponse } = user;
     return res.status(200).json({
       status: "OK",

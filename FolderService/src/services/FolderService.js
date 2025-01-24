@@ -64,11 +64,26 @@ const folderService = {
       res.status(500).json({ message: "Lỗi cập nhật folder" });
     }
   },
-  getFolder: (req, res) => {
+  getFolder: async (req, res) => {
     try {
       const { id } = req.params;
       const db = readDb();
-      const folder = db.folders.find((folder) => folder.id === id);
+      let folder = db.folders.find((folder) => folder.id === id);
+      if (!folder) {
+        const userFolderPromise = new Promise((resolve, reject) => {
+          UserService.GetFolder({ id }, (err, response) => {
+            resolve(response.folder);
+          });
+        })
+        const noteFolderPromise = new Promise((resolve, reject) => {
+          NoteService.GetFolder({ id }, (err, response) => {
+            resolve(response.folder);
+          });
+        })
+
+        const [userFolder, noteFolder] = await Promise.all([userFolderPromise, noteFolderPromise]);
+        folder = userFolder || noteFolder;
+      }
       if (!folder) {
         return res.status(404).json({ message: "Folder không tồn tại" });
       }
