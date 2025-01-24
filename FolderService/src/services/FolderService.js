@@ -74,14 +74,17 @@ const folderService = {
           UserService.GetFolder({ id }, (err, response) => {
             resolve(response.folder);
           });
-        })
+        });
         const noteFolderPromise = new Promise((resolve, reject) => {
           NoteService.GetFolder({ id }, (err, response) => {
             resolve(response.folder);
           });
-        })
+        });
 
-        const [userFolder, noteFolder] = await Promise.all([userFolderPromise, noteFolderPromise]);
+        const [userFolder, noteFolder] = await Promise.all([
+          userFolderPromise,
+          noteFolderPromise,
+        ]);
         folder = userFolder || noteFolder;
       }
       if (!folder) {

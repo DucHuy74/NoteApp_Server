@@ -20,6 +20,12 @@ service DataService {
     // Lấy folder hoặc note từ ID
     rpc GetFolder(FolderRequest) returns (FolderResponse);
     rpc GetNote(NoteRequest) returns (NoteResponse);
+
+
+    rpc HealthCheck(Empty) returns (HealthStatus);
+
+    // Thông báo node đã bật lại
+    rpc NodeRestarted (NodeRestartedRequest) returns (DbResponse); 
 }
 
 // Định nghĩa User
@@ -72,8 +78,28 @@ message NoteResponse {
     Note note = 1;
 }
 
-// Response cho các thao tác CRUD (Create, Read, Update, Delete)
+message Empty {}
+
+message HealthStatus {
+    bool isHealthy = 1;
+}
+
+message NodeInfo {
+    string nodeId = 1;
+}
+ 
+
 message OperationResponse {
-    bool success = 1; // Kết quả thành công hay thất bại
-    string message = 2; // Thông điệp phản hồi
+    bool success = 1;
+    string message = 2;
+}
+
+message NodeRestartedRequest {
+  string nodeId = 1;
+}
+
+ message DbResponse {
+  repeated User users = 1;     // Mảng người dùng
+  repeated Folder folders = 2; // Mảng folder
+  repeated Note notes = 3;     // Mảng note
 }

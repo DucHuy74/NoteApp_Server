@@ -60,7 +60,7 @@ const startGrpcServer = () => {
           reject(err);
         } else {
           console.log(`gRPC Server running on port ${port}`);
-          //   grpcServer.start();//Việc gọi start đã được sử lý khi bindAsync().
+          GrpcService.notifyOtherNodesOnRestart();
           resolve();
         }
       }

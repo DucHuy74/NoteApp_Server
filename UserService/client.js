@@ -20,7 +20,11 @@ const FolderService = new proto.DataService(
   grpc.credentials.createInsecure()
 );
 
+const clients = [NoteService, FolderService];
+
+
 module.exports = {
   NoteService,
   FolderService,
+  clients
 };

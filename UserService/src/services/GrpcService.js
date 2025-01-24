@@ -1,16 +1,7 @@
 const grpc = require("@grpc/grpc-js");
 const { readDb, writeDb } = require("../database/jsonDb");
 const { v4: uuidv4 } = require("uuid");
-
-const healthCheck = (call, callback) => {
-  // Trả về trạng thái OK nếu hệ thống hoạt động bình thường
-  try {
-    callback(null, { message: "Service is healthy" });
-  } catch (error) {
-    // Trả về trạng thái ERR nếu hệ thống gặp sự cố
-    callback({ message: "Service is unhealthy" });
-  }
-};
+const { NoteService, UserService, clients } = require("../../client");
 
 const GetUser = (call, callback) => {
   try {
@@ -177,8 +168,89 @@ const DeleteNote = (call, callback) => {
   callback(null, { success: true, message: "Xóa note thành công" });
 };
 
+const NODE_ID = "UserService";
+const OTHER_NODES = ["NoteService", "FolderService"];
+
+const HealthCheck = (call, callback) => {
+  callback(null, { isHealthy: true });
+};
+
+const NodeRestarted = (call, callback) => {
+  const { nodeId } = call.request;
+
+  console.log(`Node ${nodeId} vừa bật lại. Gửi toàn bộ DB.`);
+  const db = readDb(); // Đọc DB từ file JSON
+
+  // Đảm bảo db.users, db.folders, và db.notes chứa các đối tượng chi tiết
+  const dbResponse = {
+    users: db.users || [],
+    folders: db.folders || [],
+    notes: db.notes || [],
+  };
+
+  callback(null, dbResponse);
+};
+
+const checkNodeStatus = () => {
+  clients.forEach((client, index) => {
+    client.HealthCheck({}, (err, response) => {
+      if (err) {
+        console.log(`Node ${OTHER_NODES[index]} không khả dụng.`);
+      } else if (response.isHealthy) {
+        console.log(`Node ${OTHER_NODES[index]} đang hoạt động.`);
+      }
+    });
+  });
+};
+
+const db = readDb();
+let isNotified = false;
+const notifyOtherNodesOnRestart = () => {
+  if (isNotified) return;
+  clients.forEach((client, index) => {
+    client.NodeRestarted({ nodeId: NODE_ID }, (err, response) => {
+      if (err) {
+        console.error(
+          `Không thể thông báo cho Node ${OTHER_NODES[index]}:`,
+          err.message
+        );
+      } else {
+        // Kiểm tra dữ liệu trả về từ node (users, folders, notes)
+        if (
+          response &&
+          (response.users || response.folders || response.notes)
+        ) {
+          console.log(`Node ${OTHER_NODES[index]} trả về dữ liệu thiếu:`);
+
+          if (response.users && response.users.length > db.users.length) {
+            console.log("Có users mới");
+            db.users = response.users;
+          }
+          if (response.folders && response.folders.length > db.folders.length) {
+            console.log("Có folders mới");
+            db.folders = response.folders;
+          }
+          if (response.notes && response.notes.length > db.notes.length) {
+            console.log("Có notes mới");
+            db.notes = response.notes;
+          }
+
+          // Sau khi đồng bộ xong, lưu lại vào DB
+          writeDb(db);
+        } else {
+          console.warn("Dữ liệu trả về không hợp lệ:", response);
+        }
+      }
+    });
+  });
+  isNotified = true;
+};
+
 module.exports = {
-  healthCheck,
+  HealthCheck,
+  NodeRestarted,
+  checkNodeStatus,
+  notifyOtherNodesOnRestart,
   GetUser,
   UpsertUser,
   GetFolder,

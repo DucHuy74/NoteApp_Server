@@ -50,6 +50,7 @@ const startApiServer = () => {
 };
 
 // Hàm khởi động gRPC server
+let hasNotifiedOnRestart = false;
 const startGrpcServer = () => {
   return new Promise((resolve, reject) => {
     grpcServer.bindAsync(
@@ -60,7 +61,7 @@ const startGrpcServer = () => {
           reject(err);
         } else {
           console.log(`gRPC Server running on port ${port}`);
-          //   grpcServer.start();//Việc gọi start đã được sử lý khi bindAsync().
+          GrpcService.notifyOtherNodesOnRestart();
           resolve();
         }
       }

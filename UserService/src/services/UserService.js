@@ -92,7 +92,7 @@ const userService = {
       try {
         const noteUserPromise = new Promise((resolve, reject) => {
           NoteService.getUser({ id }, (err, response) => {
-            resolve(response.user); 
+            resolve(response.user);
           });
         });
 

@@ -14,7 +14,10 @@ const UserService = new proto.DataService(
   grpc.credentials.createInsecure() // Không dùng SSL
 );
 
+const clients = [NoteService, UserService];
+
 module.exports = {
   NoteService,
   UserService,
+  clients
 };
