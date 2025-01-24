@@ -110,6 +110,7 @@ const DeleteFolder = (call, callback) => {
   const { id } = call.request;
   const db = readDb();
   db.folders = db.folders.filter((folder) => folder.id !== id);
+  db.notes = db.notes.filter((note) => note.folderId !== id);
   writeDb(db);
   callback(null, { success: true, message: "Xóa folder thành công" });
 };
@@ -220,7 +221,6 @@ const notifyOtherNodesOnRestart = () => {
           response &&
           (response.users || response.folders || response.notes)
         ) {
-          
           if (response.users && response.users.length > db.users.length) {
             console.log("Có users mới");
             db.users = response.users;

@@ -8,18 +8,6 @@ const folderService = {
     try {
       const { name, userId } = req.body;
 
-      console.log(
-        "🚀 ------------------------------------------------------------🚀"
-      );
-      console.log(
-        "🚀 ~ file: FolderService.js:11 ~ name, userId:",
-        name,
-        userId
-      );
-      console.log(
-        "🚀 ------------------------------------------------------------🚀"
-      );
-
       const db = readDb();
       const folder = {
         id: uuidv4(),
@@ -105,6 +93,7 @@ const folderService = {
         return res.status(404).json({ message: "Folder không tồn tại" });
       }
       db.folders.splice(folderIndex, 1);
+      db.notes = db.notes.filter((note) => note.folderId !== id);
       writeDb(db);
 
       NoteService.DeleteFolder({ id }, (err, response) => {
@@ -122,7 +111,7 @@ const folderService = {
   },
   getAllFolder: (req, res) => {
     const { userId } = req.params;
-    
+
     if (!userId) {
       return res.status(400).json({ message: "Thiếu userId" });
     }

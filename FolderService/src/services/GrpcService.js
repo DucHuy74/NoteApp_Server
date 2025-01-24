@@ -110,6 +110,7 @@ const DeleteFolder = (call, callback) => {
   const { id } = call.request;
   const db = readDb();
   db.folders = db.folders.filter((folder) => folder.id !== id);
+  db.notes = db.notes.filter((note) => note.folderId !== id);
   writeDb(db);
   callback(null, { success: true, message: "Xóa folder thành công" });
 };
@@ -205,10 +206,9 @@ const checkNodeStatus = () => {
 const db = readDb();
 let isNotified = false;
 const notifyOtherNodesOnRestart = () => {
-  if(isNotified) return;
+  if (isNotified) return;
   clients.forEach((client, index) => {
     client.NodeRestarted({ nodeId: NODE_ID }, (err, response) => {
-
       if (err) {
         console.error(
           `Không thể thông báo cho Node ${OTHER_NODES[index]}:`,
@@ -220,16 +220,15 @@ const notifyOtherNodesOnRestart = () => {
           response &&
           (response.users || response.folders || response.notes)
         ) {
-
-          if(response.users && response.users.length > db.users.length) {
+          if (response.users && response.users.length > db.users.length) {
             console.log("Có users mới");
             db.users = response.users;
           }
-          if(response.folders && response.folders.length > db.folders.length) {
+          if (response.folders && response.folders.length > db.folders.length) {
             console.log("Có folders mới");
             db.folders = response.folders;
           }
-          if(response.notes && response.notes.length > db.notes.length) {
+          if (response.notes && response.notes.length > db.notes.length) {
             console.log("Có notes mới");
             db.notes = response.notes;
           }
