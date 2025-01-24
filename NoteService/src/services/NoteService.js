@@ -123,6 +123,20 @@ const noteService = {
       res.status(500).json({ message: "Lỗi xóa note" });
     }
   },
+  getAllNote: (req, res) => {
+    try {
+      const { folderId } = req.params;
+      if (!folderId) {
+        return res.status(400).json({ message: "Thiếu folderId" });
+      }
+      const db = readDb();
+      const notes = db.notes.filter((note) => note.folderId === folderId);
+      res.json({ notes });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Lỗi lấy note" });
+    }
+  },
 };
 
 module.exports = noteService;

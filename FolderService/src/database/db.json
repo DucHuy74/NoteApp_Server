@@ -5,6 +5,12 @@
       "name": "Nguyen1976",
       "email": "Nguyen2202794@gmail.com",
       "password": "$2a$10$.qoL6F4CvWDOYBpio4pQo.IoumWjywBNT5odRTwiz03z9eFHWbA1q"
+    },
+    {
+      "id": "74a029db-4518-4c8c-a736-d73d7936b3c7",
+      "name": "nguyên1976",
+      "email": "Nguyen2202794@gmail.com",
+      "password": "$2a$10$bKkaJMEieYULaOcw9ZmFUOQK3hjSLaDNSKBG9tcv1Dq10yF.CrQjq"
     }
   ],
   "folders": [
@@ -12,13 +18,28 @@
       "id": "8118ff1c-75f0-4aa2-9bb5-cf9bc12982a3",
       "userId": "56505645-e479-434c-a20f-23a2bda862e4",
       "name": "name-folder update"
+    },
+    {
+      "id": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
+      "userId": "56505645-e479-434c-a20f-23a2bda862e4",
+      "name": "name-folder update2"
     }
   ],
   "notes": [
     {
-      "id": "5c7cd934-afe8-44af-b76e-90a51dd0ad77",
+      "id": "5c7cd934-afe8-44af-b56e-90a51dd0ad77",
       "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9bc12982a3",
-      "content": "Đẹp try update"
+      "content": "<p>Đẹp try update 1 oqiwueioqwuoei mới hahaha skdfhjk haha</p>\n"
+    },
+    {
+      "id": "5c7cd934-afe8-44af-b86e-90a51dd0ad77",
+      "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
+      "content": "Đẹp try update 2"
+    },
+    {
+      "id": "5c7cd934-afe8-44af-b96e-90a51dd0ad77",
+      "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9bc12982a3",
+      "content": "<p>Đẹp try updat 3 ặhfjafuowhepofhwioefjwioefjw</p>\n"
     }
   ]
 }

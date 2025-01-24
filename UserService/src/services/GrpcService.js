@@ -220,8 +220,7 @@ const notifyOtherNodesOnRestart = () => {
           response &&
           (response.users || response.folders || response.notes)
         ) {
-          console.log(`Node ${OTHER_NODES[index]} trả về dữ liệu thiếu:`);
-
+          
           if (response.users && response.users.length > db.users.length) {
             console.log("Có users mới");
             db.users = response.users;

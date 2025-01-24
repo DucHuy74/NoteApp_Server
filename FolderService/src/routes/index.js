@@ -6,5 +6,6 @@ router.post("/create", folderService.createFolder);
 router.post("/update", folderService.updateFolder);
 router.get("/get/:id", folderService.getFolder);
 router.delete("/delete/:id", folderService.deleteFolder);
+router.get("/get-all/:userId", folderService.getAllFolder);
 
 module.exports = router;

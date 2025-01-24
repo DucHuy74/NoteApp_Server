@@ -120,6 +120,16 @@ const folderService = {
       res.status(500).json({ message: "Lỗi xóa folder" });
     }
   },
+  getAllFolder: (req, res) => {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({ message: "Thiếu userId" });
+    }
+    const db = readDb();
+    const folders = db.folders.filter((folder) => folder.userId === userId);
+    res.status(200).json({ folders });
+  },
 };
 
 module.exports = folderService;
