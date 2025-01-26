@@ -11,6 +11,4 @@ public class FolderCreationRequest {
     @NotBlank(message = "Folder name must not be blank")
     @Size(max = 250, message = "Folder name must not exceed 250 characters")
     private String folderName;
-    private LocalDate creatdate;
-    private LocalDate updateAt;
 }

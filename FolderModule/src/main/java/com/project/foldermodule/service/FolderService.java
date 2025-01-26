@@ -26,8 +26,6 @@ public class FolderService {
         Folder folder = new Folder();
         folder.setFolderId(UUID.randomUUID().toString());
         folder.setFolderName(request.getFolderName());
-        folder.setCreateDate(LocalDate.now());
-        folder.setUpdatedAt(LocalDate.now());
 
         return folderRepository.save(folder);
     }
@@ -37,7 +35,6 @@ public class FolderService {
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_KEY));
 
         folder.setFolderName(request.getFolderName());
-        folder.setUpdatedAt(LocalDate.now());
 
         return folderRepository.save(folder);
     }
