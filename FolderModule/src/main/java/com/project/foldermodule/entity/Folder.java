@@ -9,7 +9,5 @@ public class Folder {
 
     private String folderName;
 
-    private LocalDate createDate;
 
-    private LocalDate updatedAt;
 }
