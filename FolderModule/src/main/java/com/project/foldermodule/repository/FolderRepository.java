@@ -47,8 +47,6 @@ public class FolderRepository {
         }
     }
 
-
-
     public Folder save(Folder folder) {
         List<Folder> folders = readFromFile();
         folders.add(folder);
