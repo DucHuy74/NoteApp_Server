@@ -1,7 +1,9 @@
 package com.project.foldermodule.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.foldermodule.entity.Folder;
 import org.springframework.stereotype.Repository;
 
@@ -9,66 +11,81 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class FolderRepository {
-    private static final String FILE_PATH = "data/folders.json";
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String FILE_PATH = "FolderModule/data/folders.json";
+    private final ObjectMapper objectMapper;
+    public FolderRepository() {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); //dki javatime de sp localdate
+    }
 
-    private List<Folder> readFromFile() {
-        try {
-            File file = new File(FILE_PATH);
-            if (!file.exists()) {
-                file.createNewFile();
-                return new ArrayList<>();
-            }
-            return objectMapper.readValue(file, new TypeReference<List<Folder>>() {});
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JSON file", e);
+    //kiem tra va tao tep neu ko ton tai
+    private void checkAndCreateFile() throws IOException {
+        File file = new File(FILE_PATH);
+        if(!file.exists()) {
+            file.createNewFile();
         }
     }
 
-
-    private void writeToFile(List<Folder> folders) {
+    //doc du lieu tu file json
+    public List<Folder> getAllFolders() {
         try {
+            checkAndCreateFile();
             File file = new File(FILE_PATH);
-            File parentDir = file.getParentFile();
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs(); // Tạo thư mục cha nếu chưa có
+            if(file.length() == 0){
+                return new ArrayList<>(); //tra ve dsach rong neu file trong
             }
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            objectMapper.writeValue(file, folders);
-        } catch (IOException e) {
+            return objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, Folder.class));
+        }catch (IOException e){
             e.printStackTrace();
-            throw new RuntimeException("Failed to write JSON file", e);
+            return new ArrayList<>();
         }
     }
 
-    public Folder save(Folder folder) {
-        List<Folder> folders = readFromFile();
+    public void saveAllFolders(List<Folder> folders) {
+        try {
+            if(folders == null || folders.isEmpty()){
+                return;
+            }
+            checkAndCreateFile();
+
+            ObjectMapper objectMapperWithPrettyPrint = new ObjectMapper();
+            objectMapperWithPrettyPrint.registerModule(new JavaTimeModule());
+            objectMapperWithPrettyPrint.enable(SerializationFeature.INDENT_OUTPUT);
+
+            objectMapperWithPrettyPrint.writeValue(new File(FILE_PATH), folders);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addFolder(Folder folder) {
+        List<Folder> folders = getAllFolders();
         folders.add(folder);
-        writeToFile(folders);
-        return folder;
+        saveAllFolders(folders);
     }
 
-    public List<Folder> findAll() {
-        return readFromFile();
+    public void updateFolder(String folderId, Folder updatefolder) {
+        List<Folder> folders = getAllFolders();
+        for (Folder folder : folders) {
+            if (folder.getFolderId().equals(folderId)) {
+                folder.setFolderName(updatefolder.getFolderName());
+                break;
+            }
+        }
+        saveAllFolders(folders);
     }
 
-    public Optional<Folder> findById(String folderId) {
-        return readFromFile().stream().filter(f -> f.getFolderId().equals(folderId)).findFirst();
+    public void deleteFolder(String folderId) {
+        List<Folder> folders = getAllFolders();
+        folders.removeIf(folder -> folder.getFolderId().equals(folderId));
+        saveAllFolders(folders);
     }
 
-    public boolean existsByFolderName(String folderName) {
-        return readFromFile().stream().anyMatch(f -> f.getFolderName().equalsIgnoreCase(folderName));
-    }
-
-    public void deleteById(String folderId) {
-        List<Folder> folders = readFromFile();
-        folders.removeIf(f -> f.getFolderId().equals(folderId));
-        writeToFile(folders);
+    public String generateFolderId() {
+        return UUID.randomUUID().toString();
     }
 }
