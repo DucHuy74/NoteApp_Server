@@ -15,28 +15,35 @@ public class NoteController {
     @Autowired
     private NoteService noteService;
 
+    // Tạo ghi chú mới
     @PostMapping()
-    Note createNote(@RequestBody NoteCreationRequest request) {
+    public Note createNote(@RequestBody NoteCreationRequest request) {
+        // Gọi service để tạo ghi chú và tự động lưu vào file JSON
         return noteService.createNote(request);
     }
 
+    // Lấy danh sách ghi chú
     @GetMapping()
-    List<Note> getNotes() {
+    public List<Note> getNotes() {
         return noteService.getNotes();
     }
 
+    // Lấy ghi chú theo ID
     @GetMapping("/{noteId}")
-    Note getNote(@PathVariable("noteId") String noteId) {
+    public Note getNote(@PathVariable("noteId") String noteId) {
         return noteService.getNote(noteId);
     }
 
+    // Cập nhật ghi chú
     @PutMapping("/{noteId}")
-    Note updateNote(@PathVariable String noteId, @RequestBody NoteUpdateRequest request) {
+    public Note updateNote(@PathVariable String noteId, @RequestBody NoteUpdateRequest request) {
+        // Gọi service để cập nhật ghi chú và tự động lưu vào file JSON
         return noteService.updateNote(noteId, request);
     }
 
+    // Xóa ghi chú
     @DeleteMapping("/{noteId}")
-    String deleteNote(@PathVariable String noteId) {
+    public String deleteNote(@PathVariable String noteId) {
         noteService.deleteNote(noteId);
         return "Note has been deleted";
     }

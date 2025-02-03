@@ -25,22 +25,22 @@ public class FolderController {
     }
 
     @GetMapping
-    List<Folder> getFolders() {
+    public List<Folder> getFolders() {
         return folderService.getFolders();
     }
 
     @GetMapping("/{folderid}")
-    Folder getFolder(@PathVariable("folderid") String folderid) {
+    public Folder getFolder(@PathVariable("folderid") String folderid) {
         return folderService.getFolder(folderid);
     }
 
     @PutMapping("/{folderid}")
-    Folder updateFolder(@PathVariable String folderid, @RequestBody FolderUpdateRequest folder) {
+    public Folder updateFolder(@PathVariable String folderid, @RequestBody FolderUpdateRequest folder) {
         return folderService.updateFolder(folderid, folder);
     }
 
     @DeleteMapping("/{folderid}")
-    String deleteFolder(@PathVariable("folderid") String folderid) {
+    String deleteFolder(@PathVariable String folderid) {
         folderService.deleteFolder(folderid);
         return "Folder has been deleted";
     }
