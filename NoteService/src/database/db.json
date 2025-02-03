@@ -18,13 +18,38 @@
       "id": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
       "userId": "56505645-e479-434c-a20f-23a2bda862e4",
       "name": "name-folder update2"
+    },
+    {
+      "id": "382eff2a-027d-4a1d-859e-1252f1509ab2",
+      "userId": "56505645-e479-434c-a20f-23a2bda862e4",
+      "name": "new folder"
+    },
+    {
+      "id": "4d86f730-1f6f-4a2c-ac58-92b1d2e5ab56",
+      "userId": "56505645-e479-434c-a20f-23a2bda862e4",
+      "name": "haha"
     }
   ],
   "notes": [
     {
       "id": "5c7cd934-afe8-44af-b86e-90a51dd0ad77",
       "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
-      "content": "Đẹp try update 2"
+      "content": "<p>Đẹp try update 1</p>\n"
+    },
+    {
+      "id": "2c16b929-7fe3-49af-bd4a-ab757da0bf74",
+      "content": "<p>nguyên đẹp trai hahahh</p>\n",
+      "folderId": "382eff2a-027d-4a1d-859e-1252f1509ab2"
+    },
+    {
+      "id": "0695def4-d0f7-4ec5-81a3-99a5fa914150",
+      "content": "<p>Đẹp try update 1</p>\n",
+      "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3"
+    },
+    {
+      "id": "848a07f6-5574-4d69-ad50-e70859532b42",
+      "content": "<p>nguyên đẹp trai</p>\n",
+      "folderId": "4d86f730-1f6f-4a2c-ac58-92b1d2e5ab56"
     }
   ]
 }
