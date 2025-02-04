@@ -30,28 +30,28 @@ const folderService = {
         .json({ success: false, message: "Error creating folder" });
     }
   },
-  updateFolder: (req, res) => {
-    try {
-      const { id, name } = req.body;
-      const db = readDb();
-      const folder = db.folders.find((folder) => folder.id === id);
-      if (!folder) {
-        return res.status(404).json({ message: "Folder không tồn tại" });
-      }
-      folder.name = name;
-      writeDb(db);
-      NoteService.UpdateFolder(folder, (err, response) => {
-        console.log("Lỗi cập nhật folder noteService:", err);
-      });
-      UserService.UpdateFolder(folder, (err, response) => {
-        console.log("Lỗi cập nhật folder FolderService:", err);
-      });
-      res.json({ message: "Folder cập nhật thành công", folder });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Lỗi cập nhật folder" });
-    }
-  },
+  // updateFolder: (req, res) => {
+  //   try {
+  //     const { id, name } = req.body;
+  //     const db = readDb();
+  //     const folder = db.folders.find((folder) => folder.id === id);
+  //     if (!folder) {
+  //       return res.status(404).json({ message: "Folder không tồn tại" });
+  //     }
+  //     folder.name = name;
+  //     writeDb(db);
+  //     NoteService.UpdateFolder(folder, (err, response) => {
+  //       console.log("Lỗi cập nhật folder noteService:", err);
+  //     });
+  //     UserService.UpdateFolder(folder, (err, response) => {
+  //       console.log("Lỗi cập nhật folder FolderService:", err);
+  //     });
+  //     res.json({ message: "Folder cập nhật thành công", folder });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ message: "Lỗi cập nhật folder" });
+  //   }
+  // },
   getFolder: async (req, res) => {
     try {
       const { id } = req.params;

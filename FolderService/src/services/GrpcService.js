@@ -94,17 +94,17 @@ const AddFolder = (call, callback) => {
   callback(null, { success: true, message: "Thêm folder thành công" });
 };
 
-const UpdateFolder = (call, callback) => {
-  const { id, name } = call.request;
-  const db = readDb();
-  const folder = db.folders.find((folder) => folder.id === id);
-  if (!folder) {
-    return callback(null, { success: false, message: "Folder không tồn tại" });
-  }
-  folder.name = name;
-  writeDb(db);
-  callback(null, { success: true, message: "Folder update thành công" });
-};
+// const UpdateFolder = (call, callback) => {
+//   const { id, name } = call.request;
+//   const db = readDb();
+//   const folder = db.folders.find((folder) => folder.id === id);
+//   if (!folder) {
+//     return callback(null, { success: false, message: "Folder không tồn tại" });
+//   }
+//   folder.name = name;
+//   writeDb(db);
+//   callback(null, { success: true, message: "Folder update thành công" });
+// };
 
 const DeleteFolder = (call, callback) => {
   const { id } = call.request;
@@ -253,7 +253,7 @@ module.exports = {
   UpsertUser,
   GetFolder,
   AddFolder,
-  UpdateFolder,
+  // UpdateFolder,
   DeleteFolder,
   GetNote,
   AddNote,

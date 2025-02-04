@@ -15,41 +15,26 @@
   ],
   "folders": [
     {
-      "id": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
-      "userId": "56505645-e479-434c-a20f-23a2bda862e4",
-      "name": "name-folder update2"
-    },
-    {
-      "id": "382eff2a-027d-4a1d-859e-1252f1509ab2",
+      "id": "762387c8-6b13-4209-91ff-2440f5b9bc35",
       "userId": "56505645-e479-434c-a20f-23a2bda862e4",
       "name": "new folder"
     },
     {
-      "id": "4d86f730-1f6f-4a2c-ac58-92b1d2e5ab56",
+      "id": "cdccf054-1aeb-4386-b045-bdfa0cce1a24",
       "userId": "56505645-e479-434c-a20f-23a2bda862e4",
-      "name": "haha"
+      "name": "folder 2"
     }
   ],
   "notes": [
     {
-      "id": "5c7cd934-afe8-44af-b86e-90a51dd0ad77",
-      "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
-      "content": "<p>Đẹp try update 1</p>\n"
+      "id": "9b49b37c-45c8-4e78-9475-063b0affae71",
+      "folderId": "762387c8-6b13-4209-91ff-2440f5b9bc35",
+      "content": "<p>123123</p>\n"
     },
     {
-      "id": "2c16b929-7fe3-49af-bd4a-ab757da0bf74",
-      "folderId": "382eff2a-027d-4a1d-859e-1252f1509ab2",
-      "content": "<p>nguyên đẹp trai hahahh</p>\n"
-    },
-    {
-      "id": "0695def4-d0f7-4ec5-81a3-99a5fa914150",
-      "folderId": "8118ff1c-75f0-4aa2-9bb5-cf9b212982a3",
-      "content": "<p>Đẹp try update 1</p>\n"
-    },
-    {
-      "id": "848a07f6-5574-4d69-ad50-e70859532b42",
-      "folderId": "4d86f730-1f6f-4a2c-ac58-92b1d2e5ab56",
-      "content": "<p>nguyên đẹp trai</p>\n"
+      "id": "8fa8ae42-c1e1-4e4b-b116-a7f84e231de3",
+      "folderId": "762387c8-6b13-4209-91ff-2440f5b9bc35",
+      "content": "<p>âsas 1231 2313</p>\n"
     }
   ]
 }
